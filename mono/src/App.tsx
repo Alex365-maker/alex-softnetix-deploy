@@ -12,8 +12,8 @@ const getRandomImageIds = (count: number, maxId = 80): number[] => {
 const ProgressiveImage = ({ id }: { id: number }) => {
     const [loaded, setLoaded] = useState(false);
 
-    const full = `https://picsum.photos/600/400?random`;
-    const preview = `https://picsum.photos/20/13?random`;
+    const full = `https://place.dog/600/400`;
+    const preview = `https://place.dog/20/13`;
 
     return (
         <div className="gallery-item">
