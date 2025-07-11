@@ -1,15 +1,15 @@
 import {useEffect, useState} from 'react';
 import './App.css'
 
-const getRandomImageIds = (count, maxId = 80) => {
-    const ids = new Set();
+const getRandomImageIds = (count: number, maxId = 80): number[] => {
+    const ids = new Set<number>();
     while (ids.size < count) {
         ids.add(Math.floor(Math.random() * maxId));
     }
     return Array.from(ids);
 };
 
-const ProgressiveImage = ({ id }) => {
+const ProgressiveImage = ({ id }: { id: number }) => {
     const [loaded, setLoaded] = useState(false);
 
     const full = `https://picsum.photos/id/${id}/600/400`;
@@ -35,7 +35,7 @@ const ProgressiveImage = ({ id }) => {
 };
 
 const ProgressiveGallery = () => {
-    const [imageIds, setImageIds] = useState([]);
+    const [imageIds, setImageIds] = useState<number[]>([]);
 
     useEffect(() => {
         setImageIds(getRandomImageIds(9)); // например, 12 случайных картинок
