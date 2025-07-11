@@ -1,34 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useEffect, useState} from 'react';
 import './App.css'
 
+const getRandomImageIds = (count, maxId = 80) => {
+    const ids = new Set();
+    while (ids.size < count) {
+        ids.add(Math.floor(Math.random() * maxId));
+    }
+    return Array.from(ids);
+};
+
+const ProgressiveImage = ({ id }) => {
+    const [loaded, setLoaded] = useState(false);
+
+    const full = `https://picsum.photos/id/${id}/600/400`;
+    const preview = `https://picsum.photos/id/${id}/20/13`;
+
+    return (
+        <div className="gallery-item">
+            <img
+                src={preview}
+                alt=""
+                className={`image preview ${loaded ? 'hidden' : ''}`}
+                aria-hidden="true"
+            />
+            <img
+                src={full}
+                alt={`Image ${id}`}
+                className={`image full ${loaded ? 'visible' : ''}`}
+                onLoad={() => setLoaded(true)}
+                loading="lazy"
+            />
+        </div>
+    );
+};
+
+const ProgressiveGallery = () => {
+    const [imageIds, setImageIds] = useState([]);
+
+    useEffect(() => {
+        setImageIds(getRandomImageIds(9)); // например, 12 случайных картинок
+    }, []);
+
+    return (
+        <div className="gallery-container">
+            <h1 className="gallery-title">Галерея с прогрессивной загрузкой рандомных картинок из "picsum"</h1>
+            <div className="gallery-grid">
+                {imageIds.map((id) => (
+                    <ProgressiveImage key={id} id={id} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ProgressiveGallery />
   )
 }
 
